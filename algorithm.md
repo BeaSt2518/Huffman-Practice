@@ -2,51 +2,59 @@
 
 ## We need a tree structure
 
-Huffman (code) {
-    n = size(code)
+% The Algorithm for Huffman Encoding
 
-// Sort the code symbols based on their frequencies
-for (int i = 0; i < n - 1; i++) {
-    for (int j = 0; j < n - i - 1; j++) {
-        if (code[j].frequency > code[j + 1].frequency) {
-            // Swap the code symbols
-            swap(code[j], code[j + 1]);
-        }
-    }
-}
+function Huffman(code)
+    n = length(code);
 
-// Build the Huffman tree
-while (n > 1) {
-    // Create a new node
-    Node* newNode = new Node();
+    % Sort the code symbols based on their frequencies
+    for i = 1:n-1
+        for j = 1:n-i
+            if code{j}.frequency > code{j+1}.frequency
+                % Swap the code symbols
+                temp = code{j};
+                code{j} = code{j+1};
+                code{j+1} = temp;
+            end
+        end
+    end
 
-    // Take the two nodes with the lowest frequencies
-    newNode->left = code[0];
-    newNode->right = code[1];
+    % Build the Huffman tree
+    while n > 1
+        % Create a new node
+        newNode = struct('left', [], 'right', [], 'frequency', 0);
 
-    // Update the frequency of the new node
-    newNode->frequency = newNode->left->frequency + newNode->right->frequency;
+        % Take the two nodes with the lowest frequencies
+        newNode.left = code{1};
+        newNode.right = code{2};
 
-    // Remove the two nodes with the lowest frequencies from the code array
-    code.erase(code.begin(), code.begin() + 2);
+        % Update the frequency of the new node
+        newNode.frequency = newNode.left.frequency + newNode.right.frequency;
 
-    // Insert the new node into the code array
-    code.push_back(newNode);
+        % Remove the two nodes with the lowest frequencies from the code cell array
+        code(1:2) = [];
 
-    // Sort the code array based on the frequencies
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (code[j]->frequency > code[j + 1]->frequency) {
-                // Swap the code symbols
-                swap(code[j], code[j + 1]);
-            }
-        }
-    }
+        % Insert the new node into the code cell array
+        code{end+1} = newNode;
 
-    // Decrease the size of the code array
-    n--;
-}
+        % Sort the code cell array based on the frequencies
+        for i = 1:n-1
+            for j = 1:n-i
+                if code{j}.frequency > code{j+1}.frequency
+                    % Swap the code symbols
+                    temp = code{j};
+                    code{j} = code{j+1};
+                    code{j+1} = temp;
+                end
+            end
+        end
 
-// The root of the Huffman tree is the only node left in the code array
-Node* root = code[0];
-}
+        % Decrease the size of the code cell array
+        n = n - 1;
+    end
+
+    % The root of the Huffman tree is the only node left in the code cell array
+    root = code{1};
+end
+
+//Write the above code as matlab code
